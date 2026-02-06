@@ -41,7 +41,7 @@
             padding: 0 25px;
         }
 
-        /* Новый дизайн шапки */
+        /* Шапка (заголовок) */
         header {
             background: linear-gradient(135deg, var(--secondary-color) 0%, #34495e 100%);
             color: white;
@@ -49,7 +49,13 @@
             text-align: center;
             position: relative;
             overflow: hidden;
+            margin-top: 70px;
             margin-bottom: 2rem;
+            transition: margin-top 0.3s ease;
+        }
+
+        body.nav-manually-hidden header {
+            margin-top: 0;
         }
 
         header::before {
@@ -86,140 +92,221 @@
             font-weight: 300;
         }
 
-        /* Обновленные вкладки */
-        .nav-container {
+        /* ФИКСИРОВАННАЯ НАВИГАЦИЯ */
+        .nav-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transform: translateY(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--card-bg);
-            border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            margin: 2rem auto 3rem;
-            max-width: 1100px;
-            padding: 10px;
-            position: sticky;
-            top: 10px;
-            z-index: 100;
+        }
+
+        .nav-wrapper.hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-wrapper.manually-hidden {
+            transform: translateY(-100%);
+        }
+
+        .nav-container {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 10px 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Кнопка сворачивания навигации */
+        .nav-collapse-btn {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: var(--transition);
+            margin-right: 15px;
+            flex-shrink: 0;
+        }
+
+        .nav-collapse-btn:hover {
+            background: #2980b9;
+            transform: rotate(180deg);
+        }
+
+        .nav-collapse-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .nav-wrapper.manually-hidden .nav-collapse-btn i {
+            transform: rotate(180deg);
         }
 
         .nav-tabs {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 8px;
+            display: flex;
+            flex: 1;
+            justify-content: center;
+            gap: 5px;
+            flex-wrap: wrap;
         }
 
         .tab {
-            padding: 1.1rem 1.2rem;
+            padding: 0.8rem 1.2rem;
             cursor: pointer;
             text-align: center;
             font-weight: 600;
             transition: var(--transition);
-            border-radius: 10px;
+            border-radius: 8px;
             background: #f8f9fa;
             color: var(--secondary-color);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 5px;
             border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            min-width: 110px;
+        }
+
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .tab:hover::before {
+            left: 100%;
         }
 
         .tab i {
-            font-size: 1.3rem;
+            font-size: 1.1rem;
             color: var(--primary-color);
+            transition: var(--transition);
         }
 
         .tab:hover {
             background: var(--primary-color);
             color: white;
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
 
         .tab:hover i {
             color: white;
+            transform: scale(1.1);
         }
 
         .tab.active {
             background: var(--primary-color);
             color: white;
             border-color: var(--primary-color);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+            box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
         }
 
         .tab.active i {
             color: white;
         }
 
-        /* Карточный дизайн для секций */
-        .content-section {
-            display: none;
-            background: var(--card-bg);
-            padding: 2.5rem;
-            margin: 2rem auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--box-shadow);
-            max-width: 1100px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-
-        .content-section.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-            animation: fadeInUp 0.6s ease;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        h2 {
-            color: var(--secondary-color);
-            margin-bottom: 1.8rem;
-            padding-bottom: 1rem;
-            border-bottom: 3px solid var(--primary-color);
-            font-size: 2.2rem;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            position: absolute;
-            bottom: -3px;
-            left: 0;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(to right, var(--primary-color), transparent);
-        }
-
-        h2 i {
-            color: var(--primary-color);
-            background: rgba(52, 152, 219, 0.1);
-            padding: 12px;
+        /* Кнопка для показа навигации */
+        .nav-toggle-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
             border-radius: 50%;
-        }
-
-        h3 {
-            color: var(--secondary-color);
-            margin: 2rem 0 1.2rem;
-            font-size: 1.6rem;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 10px;
+            justify-content: center;
+            font-size: 1.4rem;
+            transition: var(--transition);
+            z-index: 999;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
         }
 
-        h3 i {
-            color: var(--accent-color);
+        .nav-toggle-btn.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-toggle-btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px) scale(1.1);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.4);
+        }
+
+        /* Кнопка возврата вверх */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 998;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .back-to-top:hover {
+            background: #c0392b;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        /* Индикатор прокрутки */
+        .scroll-indicator {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), var(--success-color), var(--accent-color));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.1s linear;
+            z-index: 1001;
         }
 
         /* Стили для карточек */
@@ -264,15 +351,6 @@
             overflow: hidden;
         }
 
-        .formula-container::before {
-            content: '⚗️';
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            opacity: 0.3;
-        }
-
         .equation {
             font-family: 'Consolas', 'Monaco', monospace;
             font-size: 1.4rem;
@@ -296,12 +374,25 @@
             gap: 8px;
         }
 
-        /* Грид-сетка для примеров */
+        /* Грид-сетка */
         .examples-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
+        }
+
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .problems-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Интерактивная демонстрация */
@@ -314,19 +405,11 @@
             position: relative;
         }
 
-        .demo-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            flex-wrap: wrap;
-            gap: 1rem;
-        }
-
         .demo-controls {
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            margin: 1.5rem 0;
         }
 
         select, button {
@@ -341,22 +424,6 @@
         select {
             background: white;
             min-width: 250px;
-        }
-
-        button {
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        button:hover {
-            background: #2980b9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
         }
 
         .secondary-btn {
@@ -374,6 +441,12 @@
             gap: 3rem;
             margin: 2rem 0;
             align-items: center;
+        }
+
+        @media (max-width: 1100px) {
+            .electrolysis-lab {
+                grid-template-columns: 1fr;
+            }
         }
 
         .cell-container {
@@ -428,48 +501,7 @@
             50% { transform: translateY(-20px); }
         }
 
-        .results-panel {
-            background: white;
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        }
-
-        /* Легенда */
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-            margin-top: 2rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: var(--border-radius);
-            justify-content: center;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 0.5rem 1rem;
-            background: #f8f9fa;
-            border-radius: 20px;
-        }
-
-        .legend-color {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-        }
-
         /* Раздел задач */
-        .problems-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-            gap: 2rem;
-            margin: 2rem 0;
-        }
-
         .problem {
             background: white;
             border-radius: var(--border-radius);
@@ -685,6 +717,91 @@
             background: #e9ecef;
         }
 
+        /* Основной контент */
+        .main-content {
+            margin-top: 20px;
+        }
+
+        /* Карточный дизайн для секций */
+        .content-section {
+            display: none;
+            background: var(--card-bg);
+            padding: 2.5rem;
+            margin: 2rem auto;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            max-width: 1100px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .content-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+            animation: fadeInUp 0.6s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            color: var(--secondary-color);
+            margin-bottom: 1.8rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary-color);
+            font-size: 2.2rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(to right, var(--primary-color), transparent);
+        }
+
+        h2 i {
+            color: var(--primary-color);
+            background: rgba(52, 152, 219, 0.1);
+            padding: 12px;
+            border-radius: 50%;
+        }
+
+        h3 {
+            color: var(--secondary-color);
+            margin: 2rem 0 1.2rem;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h3 i {
+            color: var(--accent-color);
+        }
+
+        h4 {
+            color: var(--secondary-color);
+            margin: 1.5rem 0 1rem;
+            font-size: 1.3rem;
+        }
+
         /* Подвал */
         footer {
             text-align: center;
@@ -697,41 +814,79 @@
 
         /* Адаптивность */
         @media (max-width: 1100px) {
-            .electrolysis-lab {
-                grid-template-columns: 1fr;
+            .nav-tabs {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+                padding-bottom: 5px;
             }
             
-            .problems-grid {
-                grid-template-columns: 1fr;
+            .tab {
+                min-width: 100px;
+                padding: 0.7rem 1rem;
+                flex-shrink: 0;
             }
         }
 
         @media (max-width: 768px) {
+            header {
+                margin-top: 60px;
+                padding: 2rem 0 1.5rem;
+            }
+            
+            body.nav-manually-hidden header {
+                margin-top: 0;
+            }
+            
             h1 {
                 font-size: 2.2rem;
                 flex-direction: column;
                 gap: 10px;
             }
             
-            .nav-tabs {
-                grid-template-columns: repeat(2, 1fr);
+            .subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .nav-container {
+                padding: 8px 15px;
+            }
+            
+            .nav-collapse-btn {
+                width: 32px;
+                height: 32px;
+                font-size: 0.9rem;
+                margin-right: 10px;
+            }
+            
+            .tab {
+                min-width: auto;
+                padding: 0.6rem 0.8rem;
+                font-size: 0.9rem;
+            }
+            
+            .tab i {
+                font-size: 1rem;
             }
             
             .content-section {
                 padding: 1.8rem;
             }
             
-            .demo-header {
-                flex-direction: column;
-                align-items: stretch;
+            .nav-toggle-btn {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+                top: 15px;
+                right: 15px;
             }
             
-            select {
-                min-width: 100%;
-            }
-            
-            .examples-grid {
-                grid-template-columns: 1fr;
+            .back-to-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+                bottom: 20px;
+                right: 20px;
             }
         }
 
@@ -740,46 +895,48 @@
                 padding: 0 15px;
             }
             
+            header {
+                margin-top: 50px;
+                padding: 1.5rem 0 1rem;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
             h2 {
                 font-size: 1.8rem;
             }
             
+            .nav-collapse-btn {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
             .tab {
-                padding: 0.9rem 0.5rem;
-                font-size: 0.9rem;
+                padding: 0.5rem 0.6rem;
+                font-size: 0.8rem;
+                gap: 3px;
             }
             
             .tab i {
-                font-size: 1.1rem;
-            }
-            
-            .production-step {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .step-number {
-                margin: 0 auto;
+                font-size: 0.9rem;
             }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <h1>
-                    <i class="fas fa-bolt"></i>
-                    Электролиз
-                </h1>
-                <p class="subtitle">Полный интерактивный конспект с тестами, задачами и производственными процессами</p>
-            </div>
-        </div>
-    </header>
+    <!-- Индикатор прокрутки -->
+    <div class="scroll-indicator" id="scrollIndicator"></div>
 
-    <div class="container">
-        <!-- Навигация -->
+    <!-- ФИКСИРОВАННАЯ НАВИГАЦИЯ -->
+    <div class="nav-wrapper" id="navWrapper">
         <div class="nav-container">
+            <button class="nav-collapse-btn" id="navCollapseBtn" title="Свернуть/развернуть меню">
+                <i class="fas fa-chevron-up"></i>
+            </button>
+            
             <div class="nav-tabs">
                 <div class="tab active" data-tab="basics">
                     <i class="fas fa-atom"></i>
@@ -811,7 +968,33 @@
                 </div>
             </div>
         </div>
+    </div>
 
+    <!-- Шапка (заголовок) -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <h1>
+                    <i class="fas fa-bolt"></i>
+                    Электролиз
+                </h1>
+                <p class="subtitle">Полный интерактивный конспект с тестами, задачами и производственными процессами</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Кнопка показа навигации -->
+    <button class="nav-toggle-btn" id="navToggleBtn" title="Показать меню">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Кнопка возврата вверх -->
+    <button class="back-to-top" id="backToTop" title="Вернуться наверх">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Основной контент -->
+    <div class="container main-content">
         <!-- Основы электролиза -->
         <section id="basics" class="content-section active">
             <h2><i class="fas fa-atom"></i> Основы электролиза</h2>
@@ -884,6 +1067,11 @@
                     <p><strong>Применение:</strong> промышленное получение алюминия (процесс Холла-Эру)</p>
                 </div>
             </div>
+            
+            <div class="card important-card">
+                <h3><i class="fas fa-exclamation-triangle"></i> Правило для расплавов</h3>
+                <p>В расплавах <strong>всегда</strong> на катоде восстанавливаются катионы металла, а на аноде окисляются анионы кислотного остатка. Конкуренции ионов нет!</p>
+            </div>
         </section>
 
         <!-- Электролиз растворов -->
@@ -925,6 +1113,12 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-brain"></i> Мнемоническое правило</h3>
+                <p><strong>"КАТод — КАТионы"</strong> — помогает запомнить, что катионы движутся к катоду.</p>
+                <p><strong>"Активные металлы (до Al) дают H₂, неактивные (после H₂) — сам металл"</strong></p>
             </div>
         </section>
 
@@ -1134,27 +1328,25 @@
             <h2><i class="fas fa-flask"></i> Интерактивная лаборатория</h2>
             
             <div class="demo-container">
-                <div class="demo-header">
-                    <h3>Проведите эксперимент</h3>
-                    <div class="demo-controls">
-                        <select id="substance-select">
-                            <option value="nacl-melt">Расплав NaCl</option>
-                            <option value="nacl-solution">Раствор NaCl</option>
-                            <option value="cuso4-solution">Раствор CuSO₄</option>
-                            <option value="naoh-solution">Раствор NaOH</option>
-                            <option value="cacl2-solution">Раствор CaCl₂</option>
-                        </select>
-                        
-                        <button id="startElectrolysis">
-                            <i class="fas fa-play"></i>
-                            Запустить
-                        </button>
-                        
-                        <button id="resetDemo" class="secondary-btn">
-                            <i class="fas fa-redo"></i>
-                            Сбросить
-                        </button>
-                    </div>
+                <div class="demo-controls">
+                    <label for="substance-select">Выберите электролит:</label>
+                    <select id="substance-select">
+                        <option value="nacl-melt">Расплав NaCl</option>
+                        <option value="nacl-solution">Раствор NaCl</option>
+                        <option value="cuso4-solution">Раствор CuSO₄</option>
+                        <option value="naoh-solution">Раствор NaOH</option>
+                        <option value="cacl2-solution">Раствор CaCl₂</option>
+                    </select>
+                    
+                    <button id="startElectrolysis">
+                        <i class="fas fa-play"></i>
+                        Запустить
+                    </button>
+                    
+                    <button id="resetDemo" class="secondary-btn">
+                        <i class="fas fa-redo"></i>
+                        Сбросить
+                    </button>
                 </div>
                 
                 <div class="electrolysis-lab">
@@ -1166,7 +1358,7 @@
                         </div>
                     </div>
                     
-                    <div class="results-panel">
+                    <div class="results-panel" style="background: white; padding: 2rem; border-radius: var(--border-radius); box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
                         <h4><i class="fas fa-clipboard-list"></i> Результаты</h4>
                         <div id="demoResults">
                             <p><strong>Выбранный электролит:</strong> <span id="selectedSubstance">-</span></p>
@@ -1178,29 +1370,29 @@
                     </div>
                 </div>
                 
-                <div class="legend">
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: var(--accent-color);"></div>
+                <div class="legend" style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 2rem; padding: 1.5rem; background: white; border-radius: var(--border-radius); justify-content: center;">
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: var(--accent-color);"></div>
                         <span>Катод (-)</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: var(--primary-color);"></div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: var(--primary-color);"></div>
                         <span>Анод (+)</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: var(--success-color);"></div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: var(--success-color);"></div>
                         <span>Водород (H₂)</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #e74c3c;"></div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: #e74c3c;"></div>
                         <span>Кислород (O₂)</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #9b59b6;"></div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: #9b59b6;"></div>
                         <span>Хлор (Cl₂)</span>
                     </div>
-                    <div class="legend-item">
-                        <div class="legend-color" style="background: #f1c40f;"></div>
+                    <div class="legend-item" style="display: flex; align-items: center; gap: 10px; padding: 0.5rem 1rem; background: #f8f9fa; border-radius: 20px;">
+                        <div class="legend-color" style="width: 20px; height: 20px; border-radius: 50%; background: #f1c40f;"></div>
                         <span>Металл</span>
                     </div>
                 </div>
@@ -1215,22 +1407,208 @@
     </div>
 
     <script>
-        // Управление вкладками
-        document.querySelectorAll('.tab').forEach(tab => {
-            tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-                document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
-                
-                tab.classList.add('active');
-                const tabId = tab.getAttribute('data-tab');
-                document.getElementById(tabId).classList.add('active');
-                
-                // Автозапуск демо при открытии вкладки
-                if (tabId === 'demo') {
-                    setTimeout(() => startButton.click(), 300);
+        // Управление навигацией
+        const navWrapper = document.getElementById('navWrapper');
+        const navCollapseBtn = document.getElementById('navCollapseBtn');
+        const navToggleBtn = document.getElementById('navToggleBtn');
+        const backToTop = document.getElementById('backToTop');
+        const scrollIndicator = document.getElementById('scrollIndicator');
+        const body = document.body;
+        
+        // Состояния навигации
+        let isAutoHidden = false;
+        let isManuallyHidden = false;
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        let isMouseOverNav = false;
+        const SCROLL_THRESHOLD = 50;
+        const NAV_HEIGHT = 60;
+
+        // Сохраняем состояние в localStorage
+        function saveNavState() {
+            localStorage.setItem('navManuallyHidden', isManuallyHidden);
+        }
+
+        // Загружаем состояние из localStorage
+        function loadNavState() {
+            const savedState = localStorage.getItem('navManuallyHidden');
+            if (savedState === 'true') {
+                isManuallyHidden = true;
+                hideNavigationManually();
+            }
+        }
+
+        // Ручное скрытие/показа навигации
+        function toggleNavigationManually() {
+            if (isManuallyHidden) {
+                showNavigationManually();
+            } else {
+                hideNavigationManually();
+            }
+            saveNavState();
+        }
+
+        // Ручное скрытие
+        function hideNavigationManually() {
+            navWrapper.classList.add('manually-hidden');
+            navWrapper.classList.remove('hidden');
+            body.classList.add('nav-manually-hidden');
+            isManuallyHidden = true;
+            navCollapseBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+            navCollapseBtn.title = "Развернуть меню";
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > 100) {
+                navToggleBtn.classList.add('visible');
+            }
+        }
+
+        // Ручной показ
+        function showNavigationManually() {
+            navWrapper.classList.remove('manually-hidden');
+            body.classList.remove('nav-manually-hidden');
+            isManuallyHidden = false;
+            navCollapseBtn.innerHTML = '<i class="fas fa-chevron-up"></i>';
+            navCollapseBtn.title = "Свернуть меню";
+            navToggleBtn.classList.remove('visible');
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            if (scrollTop > NAV_HEIGHT && !isMouseOverNav) {
+                setTimeout(() => {
+                    if (!isManuallyHidden && !isMouseOverNav) {
+                        hideNavigationAuto();
+                    }
+                }, 2000);
+            }
+        }
+
+        // Автоматическое скрытие
+        function hideNavigationAuto() {
+            if (!isManuallyHidden && !isMouseOverNav) {
+                navWrapper.classList.add('hidden');
+                isAutoHidden = true;
+                navToggleBtn.classList.add('visible');
+            }
+        }
+
+        // Автоматический показ
+        function showNavigationAuto() {
+            if (!isManuallyHidden) {
+                navWrapper.classList.remove('hidden');
+                isAutoHidden = false;
+                navToggleBtn.classList.remove('visible');
+            }
+        }
+
+        // Обработка прокрутки
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            // Индикатор прокрутки
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const scrollPercentage = (scrollTop / (documentHeight - windowHeight)) * 100;
+            scrollIndicator.style.transform = `scaleX(${scrollPercentage / 100})`;
+            
+            // Кнопка "Наверх"
+            if (scrollTop > 300) {
+                backToTop.classList.add('visible');
+            } else {
+                backToTop.classList.remove('visible');
+            }
+            
+            // Если навигация скрыта вручную
+            if (isManuallyHidden) {
+                if (scrollTop > 100) {
+                    navToggleBtn.classList.add('visible');
+                } else {
+                    navToggleBtn.classList.remove('visible');
                 }
+                return;
+            }
+            
+            // Автоматическое управление
+            const scrollingDown = scrollTop > lastScrollTop;
+            const scrolledMoreThanThreshold = Math.abs(scrollTop - lastScrollTop) > SCROLL_THRESHOLD;
+            
+            if (scrollingDown && scrolledMoreThanThreshold && scrollTop > NAV_HEIGHT && !isMouseOverNav) {
+                hideNavigationAuto();
+            } else if (!scrollingDown && scrolledMoreThanThreshold && scrollTop > NAV_HEIGHT) {
+                showNavigationAuto();
+            } else if (scrollTop <= NAV_HEIGHT) {
+                showNavigationAuto();
+            }
+            
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+            
+            clearTimeout(scrollTimeout);
+            if (scrollTop > NAV_HEIGHT && !isAutoHidden && !isMouseOverNav && !isManuallyHidden) {
+                scrollTimeout = setTimeout(() => {
+                    if (!isMouseOverNav && !isManuallyHidden) {
+                        hideNavigationAuto();
+                    }
+                }, 3000);
+            }
+        }
+
+        // Показать навигацию по кнопке меню
+        function showNavigationByButton() {
+            if (isManuallyHidden) {
+                showNavigationManually();
+            } else if (isAutoHidden) {
+                showNavigationAuto();
+                scrollTimeout = setTimeout(() => {
+                    if (!isMouseOverNav && !isManuallyHidden) {
+                        hideNavigationAuto();
+                    }
+                }, 3000);
+            }
+        }
+
+        // Кнопка "Наверх"
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
             });
-        });
+            showNavigationAuto();
+        }
+
+        // Переключение вкладок
+        function switchTab(tabElement) {
+            const tabId = tabElement.getAttribute('data-tab');
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            tabElement.classList.add('active');
+            
+            document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            
+            if (isManuallyHidden) {
+                showNavigationManually();
+            } else if (isAutoHidden) {
+                showNavigationAuto();
+            }
+            
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(() => {
+                if (!isMouseOverNav && !isManuallyHidden) {
+                    hideNavigationAuto();
+                }
+            }, 3000);
+            
+            setTimeout(() => {
+                const element = document.getElementById(tabId);
+                const headerOffset = isManuallyHidden ? 20 : (NAV_HEIGHT + 20);
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }, 100);
+        }
 
         // Решения задач
         function toggleSolution(problemNum) {
@@ -1390,7 +1768,6 @@
             document.getElementById('testMessage').textContent = message;
             document.getElementById('testResult').classList.add('show');
             
-            // Перерисовываем текущий вопрос для показа правильных ответов
             renderTestQuestion(currentTestQuestion);
         }
 
@@ -1401,12 +1778,6 @@
             document.getElementById('testResult').classList.remove('show');
             renderTestQuestion(0);
         }
-
-        // Инициализация теста
-        document.getElementById('nextQuestion').addEventListener('click', nextQuestion);
-        document.getElementById('prevQuestion').addEventListener('click', prevQuestion);
-        document.getElementById('submitTest').addEventListener('click', submitTest);
-        renderTestQuestion(0);
 
         // Интерактивная лаборатория
         const electrolysisData = {
@@ -1474,38 +1845,28 @@
             }
         };
 
-        const substanceSelect = document.getElementById('substance-select');
-        const startButton = document.getElementById('startElectrolysis');
-        const resetButton = document.getElementById('resetDemo');
-        const cell = document.getElementById('electrolysisCell');
-        const metalDeposit = document.getElementById('metal-deposit');
-
         function startElectrolysis() {
-            const selectedSubstance = substanceSelect.value;
+            const selectedSubstance = document.getElementById('substance-select').value;
             const data = electrolysisData[selectedSubstance];
             
-            // Очистка предыдущих пузырьков
             document.querySelectorAll('.bubble').forEach(bubble => bubble.remove());
             
-            // Обновление информации
             document.getElementById('selectedSubstance').textContent = data.name;
             document.getElementById('cathodeProcess').textContent = data.cathode;
             document.getElementById('anodeProcess').textContent = data.anode;
             document.getElementById('totalEquation').textContent = data.equation;
             document.getElementById('observations').textContent = data.observations;
             
-            // Сброс металлического осадка
+            const metalDeposit = document.getElementById('metal-deposit');
             metalDeposit.style.height = '0';
             metalDeposit.style.backgroundColor = '';
             
-            // Создание пузырьков
             data.bubbles.forEach(bubbleType => {
                 for (let i = 0; i < bubbleType.count; i++) {
                     createBubble(bubbleType, i);
                 }
             });
             
-            // Создание металлического осадка
             if (data.metalDeposit) {
                 setTimeout(() => {
                     metalDeposit.style.backgroundColor = data.metalColor;
@@ -1518,36 +1879,29 @@
             const bubble = document.createElement('div');
             bubble.classList.add('bubble');
             
-            // Задержка для анимации
             const delay = 300 + index * 300;
             
-            // Настройка в зависимости от типа пузырька
             bubble.style.background = bubbleType.color;
             
-            // Позиционирование
             if (bubbleType.side === 'cathode') {
                 bubble.style.left = '60px';
             } else {
                 bubble.style.right = '60px';
             }
             
-            // Начальная позиция (внизу)
             bubble.style.bottom = '20px';
             
-            // Размер
             const size = 15 + Math.random() * 15;
             bubble.style.width = `${size}px`;
             bubble.style.height = `${size}px`;
             
-            cell.appendChild(bubble);
+            document.getElementById('electrolysisCell').appendChild(bubble);
             
-            // Анимация всплытия
             setTimeout(() => {
                 bubble.style.transition = 'bottom 2s ease-in-out, opacity 2s ease-in-out';
                 bubble.style.bottom = '260px';
                 bubble.style.opacity = '0';
                 
-                // Удаление пузырька после анимации
                 setTimeout(() => {
                     if (bubble.parentNode) {
                         bubble.parentNode.removeChild(bubble);
@@ -1558,6 +1912,7 @@
 
         function resetDemo() {
             document.querySelectorAll('.bubble').forEach(bubble => bubble.remove());
+            const metalDeposit = document.getElementById('metal-deposit');
             metalDeposit.style.height = '0';
             
             document.getElementById('selectedSubstance').textContent = '-';
@@ -1567,12 +1922,57 @@
             document.getElementById('observations').textContent = '-';
         }
 
-        startButton.addEventListener('click', startElectrolysis);
-        resetButton.addEventListener('click', resetDemo);
-
-        // Автозапуск при загрузке страницы
-        window.addEventListener('load', () => {
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', () => {
+            loadNavState();
+            
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            navCollapseBtn.addEventListener('click', toggleNavigationManually);
+            navToggleBtn.addEventListener('click', showNavigationByButton);
+            backToTop.addEventListener('click', scrollToTop);
+            
+            navWrapper.addEventListener('mouseenter', () => {
+                isMouseOverNav = true;
+                if (!isManuallyHidden) {
+                    showNavigationAuto();
+                }
+                clearTimeout(scrollTimeout);
+            });
+            
+            navWrapper.addEventListener('mouseleave', () => {
+                isMouseOverNav = false;
+                if (!isManuallyHidden) {
+                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                    if (scrollTop > NAV_HEIGHT) {
+                        scrollTimeout = setTimeout(() => {
+                            if (!isManuallyHidden) {
+                                hideNavigationAuto();
+                            }
+                        }, 1000);
+                    }
+                }
+            });
+            
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', () => switchTab(tab));
+            });
+            
+            document.getElementById('nextQuestion').addEventListener('click', nextQuestion);
+            document.getElementById('prevQuestion').addEventListener('click', prevQuestion);
+            document.getElementById('submitTest').addEventListener('click', submitTest);
+            document.getElementById('startElectrolysis').addEventListener('click', startElectrolysis);
+            document.getElementById('resetDemo').addEventListener('click', resetDemo);
+            
+            handleScroll();
+            renderTestQuestion(0);
             startElectrolysis();
+            
+            setTimeout(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                if (scrollTop > NAV_HEIGHT && !isMouseOverNav && !isManuallyHidden) {
+                    hideNavigationAuto();
+                }
+            }, 3000);
         });
     </script>
 </body>
